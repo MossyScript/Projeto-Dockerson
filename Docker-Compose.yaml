@@ -1,0 +1,26 @@
+services:
+  # Servidor DNS
+  dns:
+    build: ./ISP/DNS
+    container_name: dns-server
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    volumes:
+      - ./ISP/DNS/named.conf.local:/etc/bind/named.conf.local
+      - ./ISP/DNS/db.asa.br:/etc/bind/db.asa.br
+    networks:
+      - rede-interna
+
+  # Servidor Proxy (Traefik)
+
+  # Servidor de Email (Postfix/Dovecot)
+
+  # Servidor de Webmail (Roundcube)
+
+networks:
+  rede-interna:
+    driver: bridge
+  rede-externa:
+    external: true
+# docker network create <nome_da_network>
