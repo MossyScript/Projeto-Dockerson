@@ -8,7 +8,7 @@ Este projeto implementa uma infraestrutura completa de Provedor de Serviços de 
 
 * [@Donutzy](https://github.com/Donutzy) - Gilson dos Santos Filho
 * [@VitorRamos05](https://github.com/VitorRamos05) - Vitor Hugo Ramos Crisóstomo 
-* [@vazgabriel97](https://github.com/vazgabriel97) - Gabriel Vaz Fernandes de Oliveira
+* [@vaz97](https://github.com/Vaz97) - Gabriel Vaz Fernandes de Oliveira
 
 ## 🧱 Arquitetura da Rede do ISP
 
