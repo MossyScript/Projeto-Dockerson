@@ -1,5 +1,0 @@
-zone "asa.br"{
-    type master;
-    file "/etc/bind/db.asa.br";
-    allow-transfer { any; };
-};
