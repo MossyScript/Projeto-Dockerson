@@ -52,6 +52,7 @@ services:
       context: ./Mail
       dockerfile: Dockerfile
     container_name: email
+    restart: always
     networks:
       - rede-ISP
   # Servidor de Webmail (Roundcube)
