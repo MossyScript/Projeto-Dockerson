@@ -6,7 +6,7 @@ Este projeto implementa uma infraestrutura completa de Provedor de Serviços de 
 
 ## 👥 Equipe
 
-* [@Donutzy](https://github.com/Donutzy) - Gilson dos Santos Filho
+* [@MossyScript](https://github.com/MossyScript) - Gilson dos Santos Filho
 * [@VitorRamos05](https://github.com/VitorRamos05) - Vitor Hugo Ramos Crisóstomo 
 * [@vaz97](https://github.com/Vaz97) - Gabriel Vaz Fernandes de Oliveira
 
