@@ -1,7 +1,7 @@
 $TTL 86400 ; Default TTL of 24 hours
 $ORIGIN dockerson.br.
 
-@       IN      SOA     ns.dockerson.br. root.sockerson.br (
+@       IN      SOA     ns.dockerson.br. admin.sockerson.br (
                         2024071001 ; Serial number
                         7200       ; Refresh every 2 hours
                         3600       ; Retry every hour
@@ -11,9 +11,7 @@ $ORIGIN dockerson.br.
                         
 
         IN      NS      ns.dockerson.br.
+ns      IN      A       192.168.1.188
 
-@       IN      A       10.25.2.66
-
-ns      IN      A       10.25.2.66
-*       IN      A       10.25.2.66
-
+@       IN      A       192.168.1.188   
+*       IN      A       192.168.1.188   

@@ -1,38 +1,42 @@
 services:
   # Servidor DNS
   dns:
-    build: ./ISP/DNS
-    container_name: dns-server
+    container_name: dns
+    image: ubuntu/bind9:latest
+    environment:
+      - BIND9_USER=root
+      - TZ=America/Fortaleza
     ports:
       - "53:53/udp"
       - "53:53/tcp"
     volumes:
-      - ./ISP/DNS/named.conf.local:/etc/bind/named.conf.local
-      - ./ISP/DNS/db.asa.br:/etc/bind/db.asa.br
+      - ./ISP/DNS/resolved.conf:/etc/systemd/resolved.conf
+      - ./ISP/DNS/named.conf:/etc/bind/named.conf
+      - ./ISP/DNS/dockerson.zone:/etc/bind/dockerson.zone
+    restart: unless-stopped
     networks:
-      - rede-interna
-
+      - rede-ISP
   # Servidor Proxy (Traefik)
   traefik:
     image: traefik:latest
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - rede-ISP
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./ISP/Traefik/traefik-config.yaml:/etc/traefik/traefik.yaml:ro
   
   # Servidor de Email (Postfix/Dovecot)
 
   # Servidor de Webmail (Roundcube)
 
 networks:
-  rede-interna:
-    driver: bridge
+  rede-ISP:
+    external: true
   rede-externa:
     external: true
 # docker network create <nome_da_network>
