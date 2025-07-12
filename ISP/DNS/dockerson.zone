@@ -10,8 +10,9 @@ $ORIGIN dockerson.br.
                         )    
                         
 
-        IN      NS      ns.dockerson.br.
-ns      IN      A       192.168.1.188
+@       IN      NS              ns.dockerson.br.
+@       IN      MX      10      mail.dockerson.br. 
+ns      IN      A               192.168.1.188
 
-@       IN      A       192.168.1.188   
-*       IN      A       192.168.1.188   
+@       IN      A               192.168.1.188   
+*       IN      A               192.168.1.188   
