@@ -1,5 +1,4 @@
 services:
-  # Servidor DNS
   dns:
     container_name: dns
     image: ubuntu/bind9:latest
@@ -10,9 +9,9 @@ services:
       - "53:53/udp"
       - "53:53/tcp"
     volumes:
-      - ./ISP/DNS/resolved.conf:/etc/systemd/resolved.conf
-      - ./ISP/DNS/named.conf:/etc/bind/named.conf
-      - ./ISP/DNS/dockerson.zone:/etc/bind/dockerson.zone
+      - ./DNS/resolved.conf:/etc/systemd/resolved.conf
+      - ./DNS/named.conf:/etc/bind/named.conf
+      - ./DNS/dockerson.zone:/etc/bind/dockerson.zone
     restart: unless-stopped
     networks:
       - rede-ISP
@@ -28,8 +27,21 @@ services:
       - rede-ISP
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./ISP/Traefik/traefik-config.yaml:/etc/traefik/traefik.yaml:ro
-  
+      - ./Traefik/traefik-config.yaml:/etc/traefik/traefik.yaml:ro 
+  # Portal (Portal.dockerson.br)
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nginx-http.rule=Host("portal.dockerson.br")
+      - traefik.http.routers.nginx-http.entrypoints=web
+    restart: unless-stopped
+    volumes:
+      - ./Portal/index.html:/usr/share/nginx/html/index.html
+
+    networks:
+      - rede-ISP
   # Servidor de Email (Postfix/Dovecot)
 
   # Servidor de Webmail (Roundcube)
