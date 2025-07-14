@@ -49,7 +49,7 @@ services:
   # Servidor de Email (Postfix/Dovecot)
   email:
     build: 
-      context: ./Mail
+      context: ./ISP/Mail
       dockerfile: Dockerfile
     container_name: email
     restart: always
