@@ -64,6 +64,4 @@ services:
 networks:
   rede-ISP:
     external: true
-  rede-externa:
-    external: true
 # docker network create <nome_da_network>
