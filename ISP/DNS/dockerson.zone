@@ -16,3 +16,12 @@ ns      IN      A               192.168.1.188
 
 @       IN      A               192.168.1.188   
 *       IN      A               192.168.1.188   
+
+portal          IN    A         192.168.1.188
+mail            IN    A         192.168.1.188
+traefik         IN    A         192.168.1.188
+
+cliente1                IN    A         192.168.1.188
+sign.cliente1           IN    A         192.168.1.188
+api.cliente1            IN    A         192.168.1.188
+dashboard.client1       IN    A         192.168.1.188

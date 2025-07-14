@@ -29,27 +29,31 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./Traefik/traefik-config.yaml:/etc/traefik/traefik.yaml:ro 
+
+    labels: 
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.dockerson.br`)"
+      - "traefik.http.routers.traefik-dashboard.entrypoints=web"
+      - "traefik.http.routers.traefik-dashboard.service=api@internal"
+       
   # Portal (Portal.dockerson.br)
   nginx:
-    container_name: nginx
+    container_name: portal
     image: nginx:latest
     labels:
       - traefik.enable=true
       - traefik.http.routers.nginx-http.rule=Host("portal.dockerson.br")
       - traefik.http.routers.nginx-http.entrypoints=web
     restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
     volumes:
-      - ./Portal/index.html:/usr/share/nginx/html/index.html
+      - ./Portal/index.html:/usr/share/nginx/html/index.html:ro #ro para modo read only
     networks:
       - rede-ISP
 
   # Servidor de Email (Postfix/Dovecot)
   email:
     build: 
-      context: ./ISP/Mail
+      context: ./Mail
       dockerfile: Dockerfile
     container_name: email
     restart: always
