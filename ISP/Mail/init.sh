@@ -22,4 +22,4 @@ service dovecot start
 service postfix start
 
 # Manter container rodando
-tail -f /dev/null
+tail -F /var/log/mail.log
