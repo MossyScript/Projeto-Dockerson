@@ -15,6 +15,7 @@ services:
     restart: unless-stopped
     networks:
       - rede-ISP
+
   # Servidor Proxy (Traefik)
   traefik:
     container_name: traefik
@@ -56,12 +57,19 @@ services:
       context: ./Mail
       dockerfile: Dockerfile
     container_name: email
-    restart: always
     networks:
       - rede-ISP
+    ports:
+      - "25:25/tcp"
+      - "587:587/tcp"
+      - "110:110/tcp"
+      - "143:143/tcp"
+      - "465:465/tcp"
+    volumes:
+      - ./Mail/data:/home
+
   # Servidor de Webmail (Roundcube)
 
 networks:
   rede-ISP:
     external: true
-# docker network create <nome_da_network>

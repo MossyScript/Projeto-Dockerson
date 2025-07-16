@@ -1,18 +1,17 @@
 $TTL 86400 ; Default TTL of 24 hours
 $ORIGIN dockerson.br.
 
-@       IN      SOA     ns.dockerson.br. admin.sockerson.br (
+@       IN      SOA     ns.dockerson.br. root.sockerson.br (
                         2024071001 ; Serial number
                         7200       ; Refresh every 2 hours
                         3600       ; Retry every hour
                         1209600    ; Expire after 2 weeks
                         86400      ; Minimum TTL of 1 day
                         )    
-                        
-
+;                        
 @       IN      NS              ns.dockerson.br.
 @       IN      MX      10      mail.dockerson.br. 
-ns      IN      A               192.168.1.188
+@       IN      A               192.168.1.188
 
-@       IN      A               192.168.1.188   
+ns      IN      A               192.168.1.188   
 *       IN      A               192.168.1.188   

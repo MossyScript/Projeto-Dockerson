@@ -6,11 +6,13 @@
 # is /etc/mailname.
 #myorigin = /etc/mailname
 
+myorigin = $myhostname
+
 smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
 biff = no
 
 # appending .domain is the MUA's job.
-append_dot_mydomain = yes
+append_dot_mydomain = no
 
 # Uncomment the next line to generate "delayed mail" warnings
 #delay_warning_time = 4h
@@ -34,14 +36,25 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
 
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
-myhostname = localhost
+myhostname = mail.dockerson.br
+mydomain = dockerson.br
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
-mydestination = $myhostname, /etc/mailname, localhost, localhost.localdomain, localhost
+# mydestination = $myhostname, /etc/mailname, localhost, localhost.localdomain, localhost
+mydestination = $myhostname, $mydomain, localhost, localhost.localdomain
 relayhost = 
-mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+mynetworks = 127.0.0.0/8 10.0.0.0/8 172.19.0.0/16 [::ffff:127.0.0.0]/104 [::1]/128
 mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
 inet_protocols = all
+
+# Delivery to Maildir format
 home_mailbox = Maildir/
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_authenticated_header = yes
+broken_sasl_auth_clients = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname

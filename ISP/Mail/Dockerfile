@@ -1,17 +1,34 @@
 FROM ubuntu:latest
 
-RUN apt-get update 
-RUN apt-get install -y postfix dovecot-core dovecot-imapd 
+RUN apt update --fix-missing -y
+RUN apt upgrade -y
+RUN apt-get install -y postfix dovecot-core dovecot-imapd syslog-ng
 
-COPY main.cf /etc/postfix/main.cf
+RUN useradd -m -s /bin/bash dockerson       && \
+    echo "dockerson:senha" | chpasswd
 
-COPY dovecot.conf /etc/dovecot/dovecot.conf
+RUN useradd -m -s /bin/bash kuberneterson   && \
+    echo "kuberneterson:senha" | chpasswd
 
-COPY 10-mail.conf /etc/dovecot/conf.d/10-mail.conf
-COPY 10-auth.conf /etc/dovecot/conf.d/10-auth.conf
-COPY 10-master.conf /etc/dovecot/conf.d/10-master.conf
+RUN useradd -m -s /bin/bash dnsilson        && \
+    echo "dnsilson:senha" | chpasswd
 
-COPY init.sh /init.sh
-RUN chmod +x /init.sh
+RUN mkdir -p /maildata/dockerson/Maildir    /maildata/kuberneterson/Maildir /maildata/dnsilson/Maildir && \
+    chown -R dockerson:dockerson            /maildata/dockerson && \
+    chown -R kuberneterson:kuberneterson    /maildata/kuberneterson && \
+    chown -R dnsilson:dnsilson              /maildata/dnsilson && \
+    chmod -R 700                            /maildata/*
 
-ENTRYPOINT ["/init.sh"]
+
+COPY ./config/main.cf /etc/postfix/main.cf
+
+COPY ./config/dovecot.conf   /etc/dovecot/dovecot.conf
+COPY ./config/10-mail.conf   /etc/dovecot/conf.d/10-mail.conf
+COPY ./config/10-auth.conf   /etc/dovecot/conf.d/10-auth.conf
+COPY ./config/10-master.conf /etc/dovecot/conf.d/10-master.conf
+
+COPY init.sh /tmp/init.sh
+RUN chmod +x /tmp/init.sh
+
+ENTRYPOINT [ "/tmp/init.sh" ]
+
