@@ -84,8 +84,8 @@ services:
     networks:
       - rede-ISP
     environment:
-      - ROUNDCUBEMAIL_DEFAULT_HOST=tls://email:143 # Keep these as they are for internal email communication
-      - ROUNDCUBEMAIL_SMTP_SERVER=tls://email:25 # Keep these as they are for internal email communication
+      - ROUNDCUBEMAIL_DEFAULT_HOST=tls://email:143 
+      - ROUNDCUBEMAIL_SMTP_SERVER=tls://email:25 
       - ROUNDCUBEMAIL_DB_TYPE=sqlite
     labels:
       - "traefik.enable=true"
@@ -96,7 +96,6 @@ services:
       - email
     volumes:
       - ./WEBMAIL/config.inc.php:/var/roundcube/config/config.inc.php
-
 
 networks:
   rede-ISP:
