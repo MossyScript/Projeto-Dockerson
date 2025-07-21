@@ -1,0 +1,10 @@
+# dynamic_config.yml (Dynamic Configuration)
+tls:
+  certificates:
+    - certFile: "/etc/traefik/certs/dockerson.br.crt"
+      keyFile: "/etc/traefik/certs/dockerson.br.key"
+  stores:
+    default:
+      defaultCertificate:
+        certFile: "/etc/traefik/certs/dockerson.br.crt"
+        keyFile: "/etc/traefik/certs/dockerson.br.key"

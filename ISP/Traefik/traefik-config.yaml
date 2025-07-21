@@ -1,15 +1,7 @@
-global:
-  checkNewVersion: false
-  sendAnonymousUsage: false
-log:
-  level: DEBUG 
-api:
-  dashboard: true
-  insecure: true 
-
+# traefik.yml (Static Configuration)
 entryPoints:
   web:
-    address: :80
+    address: ":80"
     http:
       redirections:
         entryPoint:
@@ -17,19 +9,21 @@ entryPoints:
           scheme: https
           permanent: true 
   websecure:
-    address: :443
+    address: ":443"
 
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
-    exposedByDefault: false 
+    exposedByDefault: false # Or true, depending on your setup
+  file:
+    filename: /etc/traefik/dynamic_config.yaml # Path to your dynamic config file
+    watch: true # Traefik will reload if this file changes
 
-certificatesResolvers: 
-  myresolver:
-    acme:
-      tlsChallenge: {} 
-      email: dockerson@dockerson.br 
-      storage: /letsencrypt/acme.json
-      # For testing, uncomment the staging server below:
-      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+log:
+  level: DEBUG 
+api:
+  dashboard: true
+  insecure: true # Only for local dev, disable in production

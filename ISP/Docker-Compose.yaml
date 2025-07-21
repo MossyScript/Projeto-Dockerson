@@ -15,31 +15,35 @@ services:
     restart: unless-stopped
     networks:
       - rede-ISP
+      - proxy
 
   # Servidor Proxy (Traefik)
   traefik:
     container_name: traefik
-    image: traefik:v3.4.4 
+    image: traefik:v3.4.4
     ports:
-      - "80:80"   
-      - "443:443" 
+      - "80:80"
+      - "443:443"
       - "8080:8080" 
     restart: unless-stopped
     networks:
       - rede-ISP
+      - proxy
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro 
-      - ./Traefik/traefik-config.yaml:/etc/traefik/traefik.yaml:ro 
-      - ./Traefik/letsencrypt:/letsencrypt 
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./Traefik/traefik-config.yaml:/etc/traefik/traefik.yaml
+      - ./Traefik/dynamic_config.yaml:/etc/traefik/dynamic_config.yaml
+      - ./Traefik/certs:/etc/traefik/certs
     command:
       - --configFile=/etc/traefik/traefik.yaml
+      - --providers.file.filename=/etc/traefik/dynamic_config.yaml
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.dockerson.br`)"
       - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
+      - "traefik.http.routers.traefik-dashboard.tls=true"
       - "traefik.http.routers.traefik-dashboard.service=api@internal"
-      - "traefik.http.routers.traefik-dashboard.tls.certresolver=myresolver"
-      
+
   # Portal (Portal.dockerson.br)
   portal:
     container_name: portal
@@ -49,16 +53,15 @@ services:
       - "traefik.http.routers.portal-http.rule=Host(`portal.dockerson.br`)"
       - "traefik.http.routers.portal-http.entrypoints=websecure"
       - "traefik.http.routers.portal-http.tls=true"
-      - "traefik.http.routers.portal-http.tls.certresolver=myresolver"
     restart: unless-stopped
     volumes:
-      - ./Portal/index.html:/usr/share/nginx/html/index.html:ro #ro para modo read only
+      - ./Portal/index.html:/usr/share/nginx/html/index.html:ro 
     networks:
       - rede-ISP
 
   # Servidor de Email (Postfix/Dovecot)
   email:
-    build: 
+    build:
       context: ./Mail
       dockerfile: Dockerfile
     container_name: email
@@ -72,6 +75,7 @@ services:
       - "465:465/tcp"
     volumes:
       - ./Mail/data:/home
+      - ./Mail/certs:/etc/dovecot/ssl
 
   # Servidor de Webmail (Roundcube)
   webmail:
@@ -80,21 +84,21 @@ services:
     networks:
       - rede-ISP
     environment:
-      - ROUNDCUBEMAIL_DEFAULT_HOST=tls://email:143
-      - ROUNDCUBEMAIL_SMTP_SERVER=tls://email:25
+      - ROUNDCUBEMAIL_DEFAULT_HOST=tls://email:143 
+      - ROUNDCUBEMAIL_SMTP_SERVER=tls://email:25 
       - ROUNDCUBEMAIL_DB_TYPE=sqlite
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.webmail-http.rule=Host(`webmail.dockerson.br`)"
       - "traefik.http.routers.webmail-http.entrypoints=websecure"
       - "traefik.http.routers.webmail-http.tls=true"
-      - "traefik.http.routers.webmail-http.tls.certresolver=myresolver"
     depends_on:
       - email
     volumes:
       - ./WEBMAIL/config.inc.php:/var/roundcube/config/config.inc.php
-#      - ./Containers/MAIL/Config/ssl/email.crt:/etc/ssl/certs/email.crt:ro
 
 networks:
   rede-ISP:
+    external: true
+  proxy:
     external: true
