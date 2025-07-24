@@ -11,7 +11,7 @@ services:
     volumes:
       - ./DNS/resolved.conf:/etc/systemd/resolved.conf
       - ./DNS/named.conf:/etc/bind/named.conf
-      - ./DNS/dockerson.zone:/etc/bind/dockerson.zone
+      - ./DNS:/etc/bind/
     restart: unless-stopped
     networks:
       - rede-ISP
