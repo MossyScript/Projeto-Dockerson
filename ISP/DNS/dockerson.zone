@@ -11,7 +11,7 @@ $ORIGIN dockerson.br.
 ;                        
 @       IN      NS              ns.dockerson.br.
 @       IN      MX      10      mail.dockerson.br. 
-@       IN      A               10.25.2.64
+@       IN      A               10.25.2.66
 
-ns      IN      A               10.25.2.64   
-*       IN      A               10.25.2.64   
+ns      IN      A               10.25.2.66   
+*       IN      A               10.25.2.66   
