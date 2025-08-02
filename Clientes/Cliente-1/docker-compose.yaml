@@ -1,113 +1,120 @@
-services:
-  Proxy-Client1:
+services: 
+  Proxy-Client1: # Nome do serviço: um proxy Nginx para o Cliente 1.
     image: nginx:latest
     container_name: nginx-proxy1 
-    depends_on:
-      - client1-portal
-      - client1-hotsite
-      - frontend
-      - backend
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on: # Lista de serviços dos quais este serviço depende para iniciar.
+      - client1-portal # O proxy só iniciará depois que o portal do cliente 1 estiver rodando.
+      - client1-hotsite # O proxy só iniciará depois que o hotsite do cliente 1 estiver rodando.
+      - frontend # O proxy só iniciará depois que o frontend estiver rodando.
+      - backend # O proxy só iniciará depois que o backend estiver rodando.
+    volumes: # Mapeia caminhos do seu host para caminhos dentro do contêiner.
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf 
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf 
-    networks:
+    networks: # Define as redes às quais este contêiner estará conectado.
       - rede-Client1 
-      - proxy       
-    labels:
-      - "traefik.enable=true"
+      - proxy 
+    labels: 
+      - "traefik.enable=true" # Habilita a descoberta deste serviço pelo Traefik.
 
-      - "traefik.http.routers.client1-portal-nginx-router.rule=Host(`portal.client1.dockerson.br`)" 
-      - "traefik.http.routers.client1-portal-nginx-router.entrypoints=websecure"
-      - "traefik.http.routers.client1-portal-nginx-router.tls=true" 
-      
-      - "traefik.http.routers.client1-hotsite-nginx-router.rule=Host(`hotsite.client1.dockerson.br`)" 
-      - "traefik.http.routers.client1-hotsite-nginx-router.entrypoints=websecure"
-      - "traefik.http.routers.client1-hotsite-nginx-router.tls=true" 
-      
-      - "traefik.http.routers.client1-sign-nginx-router.rule=Host(`sign.client1.dockerson.br`)" 
-      - "traefik.http.routers.client1-sign-nginx-router.entrypoints=websecure"
-      - "traefik.http.routers.client1-sign-nginx-router.tls=true"
+      - "traefik.http.routers.client1-portal-nginx-router.rule=Host(`portal.client1.dockerson.br`)" # Define uma regra de roteamento: se o host for 'portal.client1.dockerson.br', o Traefik encaminha para este serviço.
+      - "traefik.http.routers.client1-portal-nginx-router.entrypoints=websecure" # Define o ponto de entrada (porta) para este roteador, 'websecure' geralmente indica HTTPS.
+      - "traefik.http.routers.client1-portal-nginx-router.tls=true" # Habilita TLS (HTTPS) para este roteador.
 
-      - "traefik.http.services.client1-nginx-service.loadbalancer.server.port=80" 
- 
- # Portal do Cliente 1
-  client1-portal:
-    image: nginx:latest
-    container_name: client1-portal
-    volumes:
+      - "traefik.http.routers.client1-hotsite-nginx-router.rule=Host(`hotsite.client1.dockerson.br`)" # Regra de roteamento para o hotsite.
+      - "traefik.http.routers.client1-hotsite-nginx-router.entrypoints=websecure" # Ponto de entrada websecure para o hotsite.
+      - "traefik.http.routers.client1-hotsite-nginx-router.tls=true" # Habilita TLS para o hotsite.
+
+      - "traefik.http.routers.client1-sign-nginx-router.rule=Host(`sign.client1.dockerson.br`)" # Regra de roteamento para a área de autenticação/sign.
+      - "traefik.http.routers.client1-sign-nginx-router.entrypoints=websecure" # Ponto de entrada websecure para o sign.
+      - "traefik.http.routers.client1-sign-nginx-router.tls=true" # Habilita TLS para o sign.
+
+      - "traefik.http.services.client1-nginx-service.loadbalancer.server.port=80" # Configura o Traefik para direcionar o tráfego para a porta 80 do contêiner 'Proxy-Client1'.
+
+
+  # Portal do Cliente 1
+  client1-portal: 
+    image: nginx:latest 
+    container_name: client1-portal 
+    volumes: # Mapeia o arquivo index.html do seu host para o local de serviço do Nginx dentro do contêiner.
       - ./Portal/index.html:/usr/share/nginx/html/index.html:ro
-    networks:
+    networks: # Conecta-se à rede interna do Cliente 1.
       - rede-Client1
+
 
   # Hotsite do Cliente 1
-  client1-hotsite:
-    image: nginx:latest
-    container_name: client1-hotsite
-    volumes:
+  client1-hotsite: 
+    image: nginx:latest 
+    container_name: client1-hotsite 
+    volumes: # Mapeia o arquivo index.html do hotsite.
       - ./hotsite/index.html:/usr/share/nginx/html/index.html:ro
-    networks:
+    networks: # Conecta-se à rede interna do Cliente 1.
       - rede-Client1
+
 
   ### Banco de Dados (PostgreSQL) ###
   db:
-    image: postgres:15-alpine
-    container_name: sign-db
-    environment:
-      POSTGRES_USER: ${DB_USER:-dbuser}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-dbuserpass123}
-      POSTGRES_DB: ${DB_NAME:-docsign_db}
-    networks:
+    image: postgres:15-alpine # Usa a imagem oficial do PostgreSQL.
+    container_name: sign-db 
+    environment: # Variáveis de ambiente que serão passadas para o contêiner.
+      POSTGRES_USER: ${DB_USER:-dbuser} # Nome de usuário do PostgreSQL, com valor padrão 'dbuser' se DB_USER não estiver definido.
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-dbuserpass123} # Senha do PostgreSQL, com valor padrão.
+      POSTGRES_DB: ${DB_NAME:-docsign_db} # Nome do banco de dados, com valor padrão.
+    networks: # Conecta-se à rede interna do Cliente 1.
       - rede-Client1
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-dbuser} -d ${DB_NAME:-docsign_db}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+    volumes: # Mapeia um volume Docker persistente para os dados do banco de dados.
+      - postgres_data:/var/lib/postgresql/data # Garante que os dados do banco não sejam perdidos ao recriar o contêiner.
+    healthcheck: # Configuração para verificar a saúde do serviço.
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-dbuser} -d ${DB_NAME:-docsign_db}"] # Comando para verificar se o PostgreSQL está pronto para aceitar conexões.
+      interval: 5s # Frequência da verificação (a cada 5 segundos).
+      timeout: 5s # Tempo limite para o comando de saúde ser executado.
+      retries: 5 # Número de tentativas antes de declarar o serviço como não saudável.
+
 
   ### Backend/API ###
-  backend:
-    image: salesfilho/sign-api:latest
-    container_name: sign-api
-    environment:
-      DB_HOST: db
-      DB_PORT: ${DB_PORT:-5432}
-      DB_USER: ${DB_USER:-dbuser}
-      DB_PASSWORD: ${DB_PASSWORD:-dbuserpass123}
-      DB_NAME: ${DB_NAME:-docsign_db}
-    networks:
+  backend: 
+    image: salesfilho/sign-api:latest 
+    container_name: sign-api 
+    environment: # Variáveis de ambiente para configurar a conexão com o banco de dados.
+      DB_HOST: db 
+      DB_PORT: ${DB_PORT:-5432} 
+      DB_USER: ${DB_USER:-dbuser} 
+      DB_PASSWORD: ${DB_PASSWORD:-dbuserpass123} 
+      DB_NAME: ${DB_NAME:-docsign_db} 
+    networks: # Conecta-se à rede interna do Cliente 1.
       - rede-Client1
-    ports:
-      - "${BACKEND_PORT:-8000}:8000"
-    depends_on:
+    ports: # Mapeia portas do contêiner para portas no host.
+      - "${BACKEND_PORT:-8000}:8000" 
+    depends_on: # Depende do serviço 'db'.
       db:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://backend:8000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+        condition: service_healthy # O backend só iniciará quando o serviço 'db' estiver saudável.
+    healthcheck: # Configuração para verificar a saúde do backend.
+      test: ["CMD", "curl", "-f", "http://backend:8000/health"] # Testa se a API responde ao endpoint /health.
+      interval: 10s # Frequência da verificação.
+      timeout: 5s # Tempo limite para o comando de saúde.
+      retries: 5 # Número de tentativas.
+
 
   ### Frontend / App ###
-  frontend:
-    image: salesfilho/sign-app:latest
-    container_name: sign-app
-    environment:
-      API_BASE_URL: ${API_BASE_URL:-http://localhost:8000/api}
-    networks:
+  frontend: 
+    image: salesfilho/sign-app:latest # 
+    container_name: sign-app # 
+    environment: # Variáveis de ambiente para o frontend.
+      API_BASE_URL: ${API_BASE_URL:-http://localhost:8000/api} 
+    networks: # Conecta-se à rede interna do Cliente 1.
       - rede-Client1
-    ports:
+    ports: # Mapeia portas do contêiner para portas no host.
       - "${FRONTEND_PORT:-8081}:80"
-    depends_on:
+    depends_on: # Depende do serviço 'backend'.
       backend:
-        condition: service_healthy
+        condition: service_healthy # O frontend só iniciará quando o serviço 'backend' estiver saudável.
+
 
 volumes:
-  postgres_data:
+  postgres_data: 
 
-networks:
-  rede-Client1:
-    external: true
-  proxy:
-    external: true
+
+networks: # Define as redes Docker que serão usadas.
+  rede-Client1: 
+    external: true 
+  proxy: 
+    external: true 
