@@ -1,75 +1,85 @@
-services:
-  Proxy-client3:
-    image: nginx:latest
+services: 
+  Proxy-client3:  
+    image: nginx:latest  
     container_name: nginx-proxy3 
-    restart: unless-stopped
-    depends_on:
-      - client3-portal
-      - client3-wordpress
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf 
-    networks:
-      - rede-Client3
-      - proxy       
-    labels:
-      - "traefik.enable=true"
+    restart: unless-stopped  
+    depends_on: # Lista de serviços dos quais este serviço depende para iniciar.
+      - client3-portal # O proxy só iniciará depois que o portal do cliente 3 estiver rodando.
+      - client3-wordpress # O proxy só iniciará depois que o WordPress do cliente 3 estiver rodando.
+    volumes: # Mapeia caminhos do seu host para caminhos dentro do contêiner.
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks: # Define as redes às quais este contêiner estará conectado.
+      - rede-Client3  
+      - proxy 
+    labels:  
+      - "traefik.enable=true"  
 
-      - "traefik.http.routers.client3-portal-nginx-router.rule=Host(`portal.client3.dockerson.br`)" 
-      - "traefik.http.routers.client3-portal-nginx-router.entrypoints=websecure"
-      - "traefik.http.routers.client3-portal-nginx-router.tls=true" 
-      
-      - "traefik.http.routers.client3-wordpress-nginx-router.rule=Host(`wordpress.client3.dockerson.br`)" 
-      - "traefik.http.routers.client3-wordpress-nginx-router.entrypoints=websecure"
-      - "traefik.http.routers.client3-wordpress-nginx-router.tls=true" 
-    
-      - "traefik.http.services.client3-nginx-service.loadbalancer.server.port=80" 
- 
- # Portal do Cliente 2
-  client3-portal:
-    image: nginx:latest
-    container_name: client3-portal
-    volumes:
-      - ./Portal/index.html:/usr/share/nginx/html/index.html:ro
-    networks:
-      - rede-Client3
+      - "traefik.http.routers.client3-portal-nginx-router.rule=Host(`portal.client3.dockerson.br`)" # Define uma regra de roteamento: se o host for 'portal.client3.dockerson.br', o Traefik encaminha para este serviço.
+      - "traefik.http.routers.client3-portal-nginx-router.entrypoints=websecure" # Define o ponto de entrada (porta) para este roteador, 'websecure' geralmente indica HTTPS.
+      - "traefik.http.routers.client3-portal-nginx-router.tls=true" # Habilita TLS (HTTPS) para este roteador.
 
-  # wordpress do Cliente 2
-  client3-wordpress:
-    image: wordpress
-    restart: always
-    container_name: client3-wordpress
-    ports:
-      - 8084:80
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: exampledb
-    volumes:
-      - wordpress2:/var/www/html
-    networks:
+      - "traefik.http.routers.client3-wordpress-nginx-router.rule=Host(`wordpress.client3.dockerson.br`)" # Regra de roteamento para o WordPress.
+      - "traefik.http.routers.client3-wordpress-nginx-router.entrypoints=websecure" # Ponto de entrada websecure para o WordPress.
+      - "traefik.http.routers.client3-wordpress-nginx-router.tls=true" # Habilita TLS para o WordPress.
+
+      - "traefik.http.services.client3-nginx-service.loadbalancer.server.port=80" # Configura o Traefik para direcionar o tráfego para a porta 80 do contêiner 'Proxy-client3'.
+
+  ---
+
+  # Portal do Cliente 3 (note que o comentário original era 'Portal do Cliente 2')
+  client3-portal:  
+    image: nginx:latest  
+    container_name: client3-portal 
+    volumes: # Mapeia o arquivo index.html do seu host para o local de serviço do Nginx dentro do contêiner.
+      - ./Portal/index.html:/usr/share/nginx/html/index.html:ro  
+    networks: # Conecta-se à rede interna do Cliente 3.
       - rede-Client3
 
-  db2:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_DATABASE: exampledb
-      MYSQL_USER: exampleuser
-      MYSQL_PASSWORD: examplepass
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
-    volumes:
-      - db2:/var/lib/mysql
-    networks:
+  ---
+
+  # WordPress do Cliente 3 (note que o comentário original era 'wordpress do Cliente 2')
+  client3-wordpress:  
+    image: wordpress  
+    restart: always  
+    container_name: client3-wordpress 
+    ports: # Mapeia portas do contêiner para portas no host.
+      - 8084:80  
+    environment: # Variáveis de ambiente para configurar a conexão do WordPress com o banco de dados.
+      WORDPRESS_DB_HOST: db2 # O host do banco de dados é o nome do serviço 'db2' dentro da rede Docker.
+      WORDPRESS_DB_USER: exampleuser # Usuário do banco de dados para o WordPress.
+      WORDPRESS_DB_PASSWORD: examplepass # Senha do banco de dados para o WordPress.
+      WORDPRESS_DB_NAME: exampledb # Nome do banco de dados para o WordPress.
+    volumes: # Mapeia um volume persistente para os arquivos do WordPress.
+      - wordpress2:/var/www/html  
+    networks: # Conecta-se à rede interna do Cliente 3.
       - rede-Client3
 
-volumes:
-  wordpress2:
-  db2:
+  ---
 
-networks:
-  rede-Client3:
-    external: true
-  proxy:
-    external: true
+  db2:  
+    image: mysql:8.0 
+    restart: always 
+    environment: # Variáveis de ambiente para configurar o MySQL.
+      MYSQL_DATABASE: exampledb # Nome do banco de dados a ser criado.
+      MYSQL_USER: exampleuser # Usuário do banco de dados.
+      MYSQL_PASSWORD: examplepass # Senha do usuário do banco de dados.
+      MYSQL_RANDOM_ROOT_PASSWORD: '1' # Define uma senha aleatória para o usuário root (segurança).
+    volumes: # Mapeia um volume persistente para os dados do banco de dados.
+      - db2:/var/lib/mysql  
+    networks: # Conecta-se à rede interna do Cliente 3.
+      - rede-Client3
+
+---
+
+volumes:  
+  wordpress2:  
+  db2:  
+
+---
+
+networks: # Define as redes Docker que serão usadas.
+  rede-Client3:  
+    external: true 
+  proxy:  
+    external: true  
