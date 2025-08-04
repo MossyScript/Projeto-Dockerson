@@ -25,7 +25,6 @@ services:
 
       - "traefik.http.services.client3-nginx-service.loadbalancer.server.port=80" # Configura o Traefik para direcionar o tráfego para a porta 80 do contêiner 'Proxy-client3'.
 
-  ---
 
   # Portal do Cliente 3 (note que o comentário original era 'Portal do Cliente 2')
   client3-portal:  
@@ -36,7 +35,6 @@ services:
     networks: # Conecta-se à rede interna do Cliente 3.
       - rede-Client3
 
-  ---
 
   # WordPress do Cliente 3 (note que o comentário original era 'wordpress do Cliente 2')
   client3-wordpress:  
@@ -55,7 +53,6 @@ services:
     networks: # Conecta-se à rede interna do Cliente 3.
       - rede-Client3
 
-  ---
 
   db2:  
     image: mysql:8.0 
@@ -70,13 +67,11 @@ services:
     networks: # Conecta-se à rede interna do Cliente 3.
       - rede-Client3
 
----
 
 volumes:  
   wordpress2:  
   db2:  
 
----
 
 networks: # Define as redes Docker que serão usadas.
   rede-Client3:  
