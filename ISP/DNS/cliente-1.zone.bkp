@@ -1,7 +1,7 @@
 $TTL 86400 ; Default TTL of 24 hours
-$ORIGIN client2.dockerson.br.
+$ORIGIN client1.dockerson.br.
 
-@       IN      SOA     ns.client2.dockerson.br. root.client2.dockerson.br (
+@       IN      SOA     ns.client1.dockerson.br. root.client1.dockerson.br (
                         2024071001 ; Serial number
                         7200       ; Refresh every 2 hours
                         3600       ; Retry every hour
@@ -9,9 +9,9 @@ $ORIGIN client2.dockerson.br.
                         86400      ; Minimum TTL of 1 day
                         )    
 ;                        
-@       IN      NS              ns.client2.dockerson.br.
+@       IN      NS              ns.client1.dockerson.br.
 @       IN      MX      10      mail.dockerson.br. 
-@       IN      A               192.168.1.188
+@       IN      A               IP_PLACEHOLDER
 
-ns      IN      A               192.168.1.188   
-*       IN      A               192.168.1.188  
+ns      IN      A               IP_PLACEHOLDER   
+*       IN      A               IP_PLACEHOLDER   

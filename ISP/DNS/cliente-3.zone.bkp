@@ -11,7 +11,7 @@ $ORIGIN client3.dockerson.br.
 ;                        
 @       IN      NS              ns.client3.dockerson.br.
 @       IN      MX      10      mail.dockerson.br. 
-@       IN      A               192.168.1.188
+@       IN      A               IP_PLACEHOLDER
 
-ns      IN      A               192.168.1.188   
-*       IN      A               192.168.1.188   
+ns      IN      A               IP_PLACEHOLDER   
+*       IN      A               IP_PLACEHOLDER   
