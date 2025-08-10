@@ -3,21 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotsite do Cliente 1 - Grande Promoção!</title>
+    <title>Hotsite | dockerson</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
     <style>
-        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background-color: #e6f7ff; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; text-align: center; }
-        .hotsite-container { background-color: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 700px; margin: 20px; border-top: 5px solid #0056b3; }
-        h1 { color: #0056b3; font-size: 2.8em; margin-bottom: 20px; }
-        p { font-size: 1.2em; line-height: 1.6; margin-bottom: 25px; }
-        .cta-button { display: inline-block; background-color: #28a745; color: white; padding: 18px 35px; text-decoration: none; border-radius: 7px; font-size: 1.3em; font-weight: bold; transition: background-color 0.3s ease; }
-        .cta-button:hover { background-color: #218838; }
+        :root {
+            /* Cores do tema Catppuccin - Frappe */
+            --cor-primaria: #89b4fa; /* Lavender */
+            --cor-fundo: #282a36; /* Base */
+            --cor-card: rgba(40, 42, 54, 0.9); /* Base semi-transparente para o conteúdo */
+            --cor-texto: #f8f8f2; /* Text */
+            --cor-texto-claro: #bd93f9; /* Purple para destaque */
+            --sombra-card: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            background-image: url('https://images.unsplash.com/photo-1549414275-d1445b4105af?q=80&w=2070&auto=format&fit=crop'); /* Imagem de fundo opcional */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            border-radius: 15px;
+            background-color: var(--cor-card);
+            backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: var(--sombra-card);
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo i {
+            font-size: 5rem;
+            color: var(--cor-primaria);
+            text-shadow: 0 0 15px rgba(137, 180, 250, 0.6);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--cor-texto);
+            margin: 0 0 10px;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            color: var(--cor-texto-claro);
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--cor-primaria);
+            color: var(--cor-fundo);
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(137, 180, 250, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .logo i {
+                font-size: 4rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="hotsite-container">
-        <h1>✨ Grande Promoção Exclusiva para Você! ✨</h1>
-        <p>Não perca esta oportunidade única, disponível apenas por tempo limitado. Clique abaixo para saber mais e aproveitar!</p>
-        <a href="http://cliente1.dockerson.br" class="cta-button">Visitar o Portal do Cliente 1</a>
+    <div class="container">
+        <div class="logo">
+            <i class="fa-solid fa-fire"></i>
+        </div>
+        <h1>Olá, dockerson!</h1>
+        <p>Bem-vindo ao seu novo hotsite. Este é um espaço dedicado para destacar suas principais novidades e ofertas.</p>
+        <a href="http://portal.client1.dockerson.br" class="btn">Voltar para o Portal</a>
     </div>
 </body>
 </html>

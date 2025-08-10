@@ -3,67 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Links Dockerson</title>
+    <title>Dashboard de Links | Projeto dockerson</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
     <style>
+        :root {
+            --cor-primaria: #89b4fa;
+            --cor-fundo: #1e1e2e;
+            --cor-card: #313244;
+            --cor-texto: #cdd6f4;
+            --cor-texto-claro: #a6adc8;
+            --sombra-card: 0 4px 15px rgba(0, 0, 0, 0.2);
+            --sombra-card-hover: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 30px;
+            box-sizing: border-box;
         }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            max-width: 600px;
-            margin: 0 auto;
+
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
         }
-        h2 {
-            color: #0056b3;
-            border-bottom: 2px solid #0056b3;
-            padding-bottom: 5px;
-            margin-top: 20px;
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
         }
-        ul {
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--cor-texto);
+            margin: 0;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            color: var(--cor-texto-claro);
+            margin-top: 5px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .link-card {
+            background-color: var(--cor-card);
+            border-radius: 12px;
+            box-shadow: var(--sombra-card);
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--sombra-card-hover);
+        }
+
+        .link-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--cor-primaria);
+            border-bottom: 2px solid #585b70; /* Cor para borda escura */
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .link-card h2 i {
+            margin-right: 12px;
+            font-size: 1.3rem;
+        }
+
+        .link-card ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
-        li {
-            margin-bottom: 10px;
+
+        .link-card li {
+            margin-bottom: 15px;
         }
-        a {
-            color: #007bff;
+        
+        .link-card li:last-child {
+            margin-bottom: 0;
+        }
+
+        .link-card a {
+            color: var(--cor-texto);
             text-decoration: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s ease, transform 0.2s ease;
         }
-        a:hover {
-            text-decoration: underline;
+
+        .link-card a:hover {
+            color: var(--cor-primaria);
+            transform: translateX(3px);
+        }
+        
+        .link-card a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            color: var(--cor-texto-claro);
+            transition: color 0.2s ease;
+        }
+
+        .link-card a:hover i {
+            color: var(--cor-primaria);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Links Importantes - Dockerson</h1>
+    <div class="main-container">
+        <header>
+            <h1>Portal ISP</h1>
+            <p>Acesso rápido aos ambientes do Projeto</p>
+        </header>
 
-        <h2>LINKS ISP</h2>
-        <ul>
-            <li><a href="http://portal.dockerson.br" target="_blank">Portal ISP</a></li>
-            <li><a href="http://traefik.dockerson.br" target="_blank">Traefik ISP</a></li>
-            <li><a href="http://webmail.dockerson.br" target="_blank">Webmail ISP</a></li>
-        </ul>
+        <div class="grid-container">
+            
+            <div class="link-card">
+                <h2><i class="fa-solid fa-server"></i>  ISP</h2>
+                <ul>
+                    <li><a href="http://portal.dockerson.br" target="_blank"><i class="fa-solid fa-desktop"></i> Portal ISP</a></li>
+                    <li><a href="http://traefik.dockerson.br" target="_blank"><i class="fa-solid fa-network-wired"></i> Traefik ISP</a></li>
+                    <li><a href="http://webmail.dockerson.br" target="_blank"><i class="fa-solid fa-envelope"></i> Webmail ISP</a></li>
+                </ul>
+            </div>
 
-        <h2>LINKS CLIENTE 1</h2>
-        <ul>
-            <li><a href="http://portal.client1.dockerson.br" target="_blank">Portal Cliente 1</a></li>
-            <li><a href="http://hotsite.client1.dockerson.br" target="_blank">Hotsite Cliente 1</a></li>
-            <li><a href="http://sign.client1.dockerson.br" target="_blank">Sign Cliente 1</a></li>
-        </ul>
+            <div class="link-card">
+                <h2><i class="fa-brands fa-docker"></i> DOCKERSON</h2>
+                <ul>
+                    <li><a href="http://portal.client1.dockerson.br" target="_blank"><i class="fa-solid fa-desktop"></i> Portal </a></li>
+                    <li><a href="http://hotsite.client1.dockerson.br" target="_blank"><i class="fa-solid fa-fire"></i> Hotsite </a></li>
+                    <li><a href="http://sign.client1.dockerson.br" target="_blank"><i class="fa-solid fa-file-signature"></i> Sign </a></li>
+                </ul>
+            </div>
 
-        <h2>LINKS CLIENTE 2</h2>
-        <ul>
-            <li><a href="http://portal.client2.dockerson.br" target="_blank">Portal Cliente 2</a></li>
-            <li><a href="http://wordpress.client2.dockerson.br" target="_blank">WordPress Cliente 2</a></li>
-        </ul>
+            <div class="link-card">
+                <h2><i class="fa-solid fa-anchor"></i> KUBERNETERSON</h2>
+                <ul>
+                    <li><a href="http://portal.client2.dockerson.br" target="_blank"><i class="fa-solid fa-desktop"></i> Portal </a></li>
+                    <li><a href="http://wordpress.client2.dockerson.br" target="_blank"><i class="fa-brands fa-wordpress"></i> WordPress </a></li>
+                </ul>
+            </div>
+
+            <div class="link-card">
+                <h2><i class="fa-solid fa-globe"></i> DNSILSON</h2>
+                <ul>
+                    <li><a href="http://portal.client3.dockerson.br" target="_blank"><i class="fa-solid fa-desktop"></i> Portal </a></li>
+                    <li><a href="http://wordpress.client3.dockerson.br" target="_blank"><i class="fa-brands fa-wordpress"></i> WordPress </a></li>
+                </ul>
+            </div>
+
+        </div>
     </div>
 </body>
 </html>

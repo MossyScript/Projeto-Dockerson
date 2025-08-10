@@ -3,33 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal do Cliente 1</title>
+    <title>Portal do Cliente | dockerson</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
     <style>
-        body { font-family: sans-serif; margin: 40px; background-color: #f7faff; color: #333; text-align: center; }
-        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1 { color: #004085; margin-bottom: 20px; }
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 12px; }
-        a { color: #007bff; text-decoration: none; font-weight: bold; }
-        a:hover { text-decoration: underline; }
+        :root {
+            /* Cores do tema Catppuccin - Frappe */
+            --cor-primaria: #89b4fa; /* Lavender */
+            --cor-fundo: #282a36; /* Base */
+            --cor-card: #383a48; /* Surface0 */
+            --cor-texto: #f8f8f2; /* Text */
+            --cor-texto-claro: #bd93f9; /* Purple para destaque em textos claros */
+            --sombra-card: 0 4px 15px rgba(0, 0, 0, 0.2);
+            --sombra-card-hover: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 600px; /* Reduzido para focar no conteúdo principal */
+            text-align: center;
+        }
+        
+        header {
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--cor-texto);
+            margin: 0;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: var(--cor-texto-claro);
+            margin-top: 5px;
+        }
+
+        .link-card {
+            background-color: var(--cor-card);
+            border-radius: 12px;
+            box-shadow: var(--sombra-card);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--sombra-card-hover);
+        }
+
+        .link-card h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--cor-primaria);
+            border-bottom: 2px solid #44475a;
+            padding-bottom: 15px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .link-card h2 i {
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+
+        .link-card ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .link-card li {
+            margin-bottom: 20px;
+        }
+        
+        .link-card li:last-child {
+            margin-bottom: 0;
+        }
+
+        .link-card a {
+            color: var(--cor-texto);
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+            border-radius: 8px;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .link-card a:hover {
+            color: var(--cor-primaria);
+            background-color: #44475a;
+            transform: scale(1.02);
+        }
+        
+        .link-card a i {
+            margin-right: 15px;
+            width: 25px;
+            text-align: center;
+            color: var(--cor-texto-claro);
+            transition: color 0.2s ease;
+        }
+
+        .link-card a:hover i {
+            color: var(--cor-primaria);
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Bem-vindo ao Portal do Cliente 1!</h1>
-        <p>Acesse os serviços exclusivos para você:</p>
+    <div class="main-container">
+        <header>
+            <h1>Portal dockerson</h1>
+            <p>Acesso rápido aos serviços do cliente</p>
+        </header>
 
-        <ul>
-            <li><a href="http://sign.client1.dockerson.br">Área de Autenticação (Sign)</a></li>
-            <li><a href="http://cliente1.dockerson.br/hotsite-client1">Acessar Hotsite de Promoção</a></li>
-            <li><a href="#">Documentação do Produto X</a></li>
-            <li><a href="#">Suporte Dedicado</a></li>
-            <li><a href="http://dashboard.client1.dockerson.br">Dashboard Interno do Traefik do Cliente 1 (Dev)</a></li>
-        </ul>
-
-        <p style="margin-top: 30px; font-size: 0.9em; color: #666;">
-            &copy; 2024 Cliente 1. Todos os direitos reservados.
-        </p>
+        <div class="link-card">
+            <h2><i class="fa-solid fa-cloud"></i> Serviços do Cliente</h2>
+            <ul>
+                <li><a href="http://hotsite.client1.dockerson.br" target="_blank"><i class="fa-solid fa-fire"></i> Hotsite</a></li>
+                <li><a href="http://sign.client1.dockerson.br" target="_blank"><i class="fa-solid fa-file-signature"></i> Assinatura de Documentos</a></li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>
