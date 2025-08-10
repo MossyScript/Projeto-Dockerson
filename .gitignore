@@ -1,4 +1,4 @@
-./ISP/DNS/Mail/*
+./ISP/DNS/Mail/data/*
 cliente-1.zone
 cliente-2.zone
 cliente-3.zone
